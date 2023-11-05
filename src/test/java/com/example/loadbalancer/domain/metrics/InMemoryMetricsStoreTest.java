@@ -20,6 +20,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
+// TODO: add more unit tests
 class InMemoryMetricsStoreTest {
 
     InstanceRegistry registry = mock(InstanceRegistry.class);
