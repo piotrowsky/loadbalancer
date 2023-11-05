@@ -1,6 +1,6 @@
 package com.example.loadbalancer.app;
 
-import com.example.loadbalancer.domain.*;
+import com.example.loadbalancer.domain.LoadBalancer;
 import com.example.loadbalancer.domain.metrics.InMemoryMetricsStore;
 import com.example.loadbalancer.domain.registry.InMemoryInstanceRegistry;
 import com.example.loadbalancer.domain.registry.InstanceRegistry;
@@ -17,6 +17,8 @@ import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 import java.util.Set;
+
+import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 
 @Configuration
 public class AppConfiguration {
@@ -47,7 +49,7 @@ public class AppConfiguration {
                         new RoundRobinStrategy(instanceRegistry, instanceRegistryTracker::numberOfActiveInstances)
                 ),
                 new LoadMasterStrategy(
-                        new InMemoryMetricsStore(instanceRegistry)
+                        new InMemoryMetricsStore(newSingleThreadScheduledExecutor(), instanceRegistry)
                 )
         ));
     }

@@ -1,8 +1,8 @@
 package com.example.loadbalancer.domain.strategies;
 
+import com.example.loadbalancer.domain.metrics.MetricStore;
 import com.example.loadbalancer.domain.model.Instance;
 import com.example.loadbalancer.domain.model.Request;
-import com.example.loadbalancer.domain.metrics.MetricStore;
 
 public class LoadMasterStrategy implements InstanceSelectionStrategy {
 
@@ -13,8 +13,9 @@ public class LoadMasterStrategy implements InstanceSelectionStrategy {
     }
 
     @Override
-    public Instance select(Request request) {
-        return metricStore.lowestLoadIndex();
+    public Instance select(Request request) throws SelectionMissException {
+        return metricStore.lowestLoadIndex()
+                .orElseThrow(() -> new SelectionMissException("No instance with lowestLoadIndex found"));
     }
 
     @Override
